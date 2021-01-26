@@ -32,7 +32,10 @@ static int GetRegion(void)
 	else if(region[0] == 0x0B) return 7; // taiwan
 	else if(region[0] == 0x0C) return 8; // russia
 	else if(region[0] == 0x0D) return 9; // china
-	else if(region[0] == 0x0E) return 10; // mexico (unsure if this is correct)
+	else if(region[0] == 0x08) return 10; // mexico
+	//else if(region[0] == 0x01) // dev tool
+	//else if(region[0] == 0x02) // test tool
+	//else if(region[0] == 0x0E) // av tool
 	else return -1; // unknown
 }
 
