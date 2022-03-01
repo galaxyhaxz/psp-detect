@@ -43,7 +43,8 @@ static void GetShippedFW(char *buf)
 {
 	sceIdStorageLookup(0x51, 0, buf, 5);
 	// TA-079/81 boards do not contain shipped firmware
-	// This was added in TA-082 boards to detect downgrading
+	// This was added in TA-082 boards probably to detect downgrading
+	// We'll go ahead and try reading the key anyway, in case a few did have it
 	if(!isdigit((u8)buf[0]) || buf[1] != '.' || !isdigit((u8)buf[2]) || !isdigit((u8)buf[3])) {
 		sprintf(buf, "N/A");
 	}

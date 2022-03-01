@@ -28,11 +28,11 @@ MoboRev Revision[] = {
 	{ 0x00140000, 0x00020601, "TMU-001",      "First" },
 	{ 0x00140000, 0x00030601, "TMU-002",      "First" },
 	// Fat
-	{ 0x00140000, 0x00010600, "TA-079?",      "First" }, /* need confirmation */
-	{ 0x00140000, 0x00020600, "TA-079 v1a",   "First" },
-	{ 0x00140000, 0x00030600, "TA-079 v1b",   "First" },
-	{ 0x00200000, 0x00030600, "TA-079 v2",    "First" },
-	{ 0x00200000, 0x00040600, "TA-079 v3",    "First" },
+	{ 0x00140000, 0x00010600, "TA-079 v1",    "First" }, // Japan-only
+	{ 0x00140000, 0x00020600, "TA-079 v2",    "First" }, // Japan-only
+	{ 0x00140000, 0x00030600, "TA-079 v3",    "First" }, // historically known as v1
+	{ 0x00200000, 0x00030600, "TA-079 v4",    "First" }, // historically known as v2
+	{ 0x00200000, 0x00040600, "TA-079 v5",    "First" }, // historically known as v3
 	{ 0x00300000, 0x00040600, "TA-081",       "First" },
 	{ 0x00400000, 0x00114000, "TA-082",       "Legolas 1" },
 	{ 0x00400000, 0x00121000, "TA-086",       "Legolas 2" },
@@ -46,13 +46,13 @@ MoboRev Revision[] = {
 	{ 0x00600000, 0x00263100, "TA-090 v2",    "Samwise" },
 	{ 0x00600000, 0x00285000, "TA-092",       "Samwise" },
 	{ 0x00810000, 0x002C4000, "TA-093",       "Samwise VA2" },
-	{ 0x00810000, 0x002E4000, "TA-095v1",     "Samwise VA2" },
-	{ 0x00820000, 0x002E4000, "TA-095v2",     "Samwise VA2" },
+	{ 0x00810000, 0x002E4000, "TA-095 v1",    "Samwise VA2" },
+	{ 0x00820000, 0x002E4000, "TA-095 v2",    "Samwise VA2" },
 	// Go
 	{ 0x00720000, 0x00304000, "TA-091",       "Strider" },
 	{ 0x00800000, 0x00304000, "TA-094",       "Strider" }, /* need confirmation */
 	// Street
-	{ 0x00900000, 0x00403000, "TA-096/97",    "Unknown (Street)" }
+	{ 0x00900000, 0x00403000, "TA-096/97",    "Bilbo" }
 };
 
 const char *Regions[] = {
@@ -107,22 +107,24 @@ void PrintPspInfo(SystemInfo *sys)
 		} else {
 			printf("10%02d Fat (01g)", sys->region);
 		}
-	} else if(sys->tachyon >= 0x00500000 && sys->tachyon <= 0x00600000) {
-		if(sys->tachyon != 0x00600000 && sys->baryon != 0x00263100) {
-			printf("20%02d Slim (02g)", sys->region);
-		}
-	} else if(sys->tachyon == 0x00600000 && sys->baryon == 0x00263100) {
+	} else if(sys->tachyon == 0x00500000 || sys->baryon == 0x00243000) {
+		printf("20%02d Slim (02g)", sys->region);
+	} else if(sys->tachyon == 0x00600000) {
 		printf("30%02d Brite (03g)", sys->region);
 	} else if(sys->baryon == 0x002C4000) {
 		printf("30%02d Brite (04g)", sys->region);
-	} else if(sys-> baryon == 0x002E4000) {
+	} else if(sys->baryon == 0x002E4000) {
 		printf("30%02d Brite (07g/09g)", sys->region);
 	} else if(sys->baryon == 0x00304000) {
 		printf("N10%02d Go (05g)", sys->region);
 	} else if(sys->baryon == 0x00403000) {
 		printf("E10%02d Street (11g)", sys->region);
 	} else {
-		printf("Unknown");
+		if(sys->baryon & 1) {
+			printf("Unknown (Devkit)");
+		} else {
+			printf("Unknown");
+		}
 	}
 
 	printf("\n");
